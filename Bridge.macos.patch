@@ -1,0 +1,14 @@
+diff --git a/AU/Makefile b/AU/Makefile
+index eea0921..3035939 100644
+--- a/AU/Makefile
++++ b/AU/Makefile
+@@ -7,7 +7,8 @@ ifneq ($(ARCH), mac)
+ $(error The AU plugin is only available for MacOS)
+ endif
+ 
+-AU_SDK = AudioUnitExamplesAudioUnitEffectGeneratorInstrumentMIDIProcessorandOffline
++# AU_SDK = AudioUnitExamplesAudioUnitEffectGeneratorInstrumentMIDIProcessorandOffline
++AU_SDK = .
+ 
+ FLAGS += -fPIC
+ FLAGS += -arch i386 -arch x86_64

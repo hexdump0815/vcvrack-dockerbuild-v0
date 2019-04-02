@@ -1,0 +1,19 @@
+diff --git a/Makefile b/Makefile
+index 4a1fd72..64d26ca 100644
+--- a/Makefile
++++ b/Makefile
+@@ -10,7 +10,7 @@ SLUG = BOKONTEPByteBeatMachine
+ VERSION = 0.6.1
+ 
+ # FLAGS will be passed to both the C and C++ compiler
+-FLAGS +=
++FLAGS += 
+ CFLAGS +=
+ CXXFLAGS +=
+ 
+@@ -29,3 +29,5 @@ DISTRIBUTABLES += $(wildcard LICENSE*) res
+ 
+ # Include the VCV Rack plugin Makefile framework
+ include $(RACK_DIR)/plugin.mk
++
++FLAGS += -fno-fast-math

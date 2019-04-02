@@ -1,0 +1,15 @@
+see: https://github.com/memononen/nanovg/pull/392
+
+diff --git a/src/fontstash.h b/src/fontstash.h
+index 560b10b..2cf05fb 100644
+--- a/src/fontstash.h
++++ b/src/fontstash.h
+@@ -306,7 +306,7 @@ int fons__tt_getGlyphKernAdvance(FONSttFontImpl *font, int glyph1, int glyph2)
+ #endif
+ 
+ #ifndef FONS_SCRATCH_BUF_SIZE
+-#	define FONS_SCRATCH_BUF_SIZE 64000
++#	define FONS_SCRATCH_BUF_SIZE 96000
+ #endif
+ #ifndef FONS_HASH_LUT_SIZE
+ #	define FONS_HASH_LUT_SIZE 256

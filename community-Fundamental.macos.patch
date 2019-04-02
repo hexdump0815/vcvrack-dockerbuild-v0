@@ -1,0 +1,13 @@
+diff --git a/Makefile b/Makefile
+index 95fe648..f888ac5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -18,6 +18,8 @@ $(libsamplerate):
+ 	mkdir -p dep
+ 	cd dep && $(WGET) http://www.mega-nerd.com/SRC/libsamplerate-0.1.9.tar.gz
+ 	cd dep && $(UNTAR) libsamplerate-0.1.9.tar.gz
++	cp /usr/local/share/automake-1.16/config.guess dep/libsamplerate-0.1.9/Cfg
++	cp /usr/local/share/automake-1.16/config.sub dep/libsamplerate-0.1.9/Cfg
+ 	cd dep/libsamplerate-0.1.9 && $(CONFIGURE)
+ 	cd dep/libsamplerate-0.1.9/src && $(MAKE)
+ 	cd dep/libsamplerate-0.1.9/src && $(MAKE) install

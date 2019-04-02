@@ -1,0 +1,17 @@
+this is the structure required for the vst2 sdk if present:
+
+vst2-sdk
+vst2-sdk/pluginterfaces
+vst2-sdk/pluginterfaces/vst2.x
+vst2-sdk/pluginterfaces/vst2.x/aeffectx.h
+vst2-sdk/pluginterfaces/vst2.x/vstfxstore.h
+vst2-sdk/pluginterfaces/vst2.x/aeffect.h
+vst2-sdk/public.sdk
+vst2-sdk/public.sdk/source
+vst2-sdk/public.sdk/source/vst2.x
+vst2-sdk/public.sdk/source/vst2.x/aeffeditor.h
+vst2-sdk/public.sdk/source/vst2.x/audioeffectx.h
+vst2-sdk/public.sdk/source/vst2.x/audioeffect.h
+vst2-sdk/public.sdk/source/vst2.x/audioeffectx.cpp
+vst2-sdk/public.sdk/source/vst2.x/audioeffect.cpp
+vst2-sdk/public.sdk/source/vst2.x/vstplugmain.cpp

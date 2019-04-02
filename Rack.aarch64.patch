@@ -1,0 +1,90 @@
+diff --git a/compile.mk b/compile.mk
+index 397fc0c..b24182d 100644
+--- a/compile.mk
++++ b/compile.mk
+@@ -15,7 +15,7 @@ FLAGS += -DVERSION=$(VERSION)
+ FLAGS += -MMD -MP
+ FLAGS += -g
+ # Optimization
+-FLAGS += -O3 -march=nocona -ffast-math -fno-finite-math-only
++FLAGS += -O3 -march=native -mcpu=native -ffast-math -fno-finite-math-only
+ FLAGS += -Wall -Wextra -Wno-unused-parameter
+ 
+ ifneq ($(ARCH), mac)
+@@ -75,7 +75,8 @@ build/%.m.o: %.m
+ build/%.bin.o: %
+ 	@mkdir -p $(@D)
+ ifdef ARCH_LIN
+-	$(OBJCOPY) -I binary -O elf64-x86-64 -B i386:x86-64 --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
++#	$(OBJCOPY) -I binary -O elf64-x86-64 -B i386:x86-64 --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
++	$(OBJCOPY) -I binary -O elf64-littleaarch64 -B aarch64 --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
+ endif
+ ifdef ARCH_WIN
+ 	$(OBJCOPY) -I binary -O pe-x86-64 -B i386:x86-64 --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
+diff --git a/dep.mk b/dep.mk
+index f6fa0d0..65ca44a 100644
+--- a/dep.mk
++++ b/dep.mk
+@@ -4,7 +4,7 @@ include $(RACK_DIR)/arch.mk
+ DEP_LOCAL ?= .
+ DEP_PATH := $(shell pwd)/$(DEP_LOCAL)
+ 
+-DEP_FLAGS += -g -O3 -march=nocona
++DEP_FLAGS += -g -O3 -march=native -mcpu=native
+ 
+ ifeq ($(ARCH), mac)
+ 	DEP_MAC_SDK_FLAGS := -mmacosx-version-min=10.7
+diff --git a/dep/Makefile b/dep/Makefile
+index e2c3f62..accd07c 100755
+--- a/dep/Makefile
++++ b/dep/Makefile
+@@ -82,6 +82,7 @@ $(libspeexdsp):
+ 	$(WGET) "https://vcvrack.com/downloads/dep/speexdsp-SpeexDSP-1.2rc3.tgz"
+ 	$(UNTAR) speexdsp-SpeexDSP-1.2rc3.tgz
+ 	cd speexdsp-SpeexDSP-1.2rc3 && $(CONFIGURE)
++	cp ../../resample_neon.h speexdsp-SpeexDSP-1.2rc3/libspeexdsp
+ 	$(MAKE) -C speexdsp-SpeexDSP-1.2rc3
+ 	$(MAKE) -C speexdsp-SpeexDSP-1.2rc3 install
+ 
+diff --git a/src/engine.cpp b/src/engine.cpp
+index 4531270..cda5159 100644
+--- a/src/engine.cpp
++++ b/src/engine.cpp
+@@ -6,8 +6,9 @@
+ #include <algorithm>
+ #include <chrono>
+ #include <thread>
+-#include <xmmintrin.h>
+-#include <pmmintrin.h>
++/* #include <xmmintrin.h> */
++/* #include <pmmintrin.h> */
++#include <unistd.h>
+ #include <atomic>
+ 
+ #include "engine.hpp"
+@@ -253,8 +254,8 @@ static void engineStep() {
+ static void engineRun() {
+ 	// Set CPU to flush-to-zero (FTZ) and denormals-are-zero (DAZ) mode
+ 	// https://software.intel.com/en-us/node/682949
+-	_MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);
+-	_MM_SET_DENORMALS_ZERO_MODE(_MM_DENORMALS_ZERO_ON);
++	// _MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);
++	// _MM_SET_DENORMALS_ZERO_MODE(_MM_DENORMALS_ZERO_ON);
+ 
+ 	// Every time the engine waits and locks a mutex, it steps this many frames
+ 	const int mutexSteps = 64;
+diff --git a/src/window.cpp b/src/window.cpp
+index 17dc482..ce2d87f 100644
+--- a/src/window.cpp
++++ b/src/window.cpp
+@@ -368,6 +368,10 @@ void windowInit() {
+ 	glfwSetKeyCallback(gWindow, keyCallback);
+ 	glfwSetDropCallback(gWindow, dropCallback);
+ 
++#if (defined(__arm__) || defined(__aarch64__))
++	glfwIconifyWindow(gWindow);
++#endif
++
+ 	// Set up GLEW
+ 	glewExperimental = GL_TRUE;
+ 	err = glewInit();

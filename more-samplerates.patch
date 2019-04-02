@@ -1,0 +1,13 @@
+diff --git a/src/app/Toolbar.cpp b/src/app/Toolbar.cpp
+index e5d5929..b28d522 100644
+--- a/src/app/Toolbar.cpp
++++ b/src/app/Toolbar.cpp
+@@ -167,7 +167,7 @@ struct SampleRateButton : TooltipIconButton {
+ 		pauseItem->text = gPaused ? "Resume engine" : "Pause engine";
+ 		menu->addChild(pauseItem);
+ 
+-		std::vector<float> sampleRates = {44100, 48000, 88200, 96000, 176400, 192000};
++		std::vector<float> sampleRates = {22050, 32000, 44100, 48000, 88200, 96000, 176400, 192000};
+ 		for (float sampleRate : sampleRates) {
+ 			SampleRateItem *item = new SampleRateItem();
+ 			item->text = stringf("%.0f Hz", sampleRate);
