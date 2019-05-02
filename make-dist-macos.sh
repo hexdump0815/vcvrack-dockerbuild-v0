@@ -12,3 +12,5 @@ rm -rf dist/plugins/*/src dist/plugins/*/dep dist/plugins/*/build dist/plugins/*
 strip -S dist/Rack dist/plugins/*/plugin.dylib
 mkdir dist/plugins.off
 for i in dist/plugins/* ; do if [ ! -f $i/plugin.dylib ]; then mv -v $i dist/plugins.off ; fi ; done
+# SkJack resulted in a core dump on vcvrack exit, so turn it off for now
+mv dist/plugins/SkJack dist/plugins.off
